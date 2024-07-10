@@ -16,5 +16,9 @@ class Service(models.Model):
     duration = models.IntegerField()
     access = models.CharField(max_length=50, choices=ACCESS_CHOICES, default=PUBLIC)
 
+    class Meta:
+        app_label = 'core'
+        verbose_name = 'services'
+
     def __str__(self):
         return self.name

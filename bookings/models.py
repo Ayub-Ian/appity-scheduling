@@ -13,5 +13,10 @@ class Appointment(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     notes = models.TextField(blank=True, null=True)
 
+    class Meta:
+        app_label = 'core'
+        verbose_name = 'appointment'
+        verbose_name_plural = 'appointments'
+
     def __str__(self):
         return f"{self.service.name} - {self.appointment_date}"

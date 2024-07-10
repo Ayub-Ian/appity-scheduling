@@ -31,27 +31,28 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework',
+    'rest_framework.authtoken',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
-    'bookings.apps.BookingsConfig',
-    'services.apps.ServicesConfig',
-    'notifications.apps.NotificationsConfig',
+    'core.apps.CoreConfig',
 ]
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'core.authentication.middleware.TokenAuthenticationMiddleware',
+    'django.middleware.security.SecurityMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
 
 ROOT_URLCONF = 'appity.urls'
 
@@ -73,7 +74,14 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'appity.wsgi.application'
 
+AUTH_USER_MODEL = 'core.AppUser'
 
+APPITY_RANDOM_ID = {
+    'default': {'MIN': 1000,
+                'MAX': 999999,
+                'GROWTH_FACTOR': 10,
+                'GROW_AFTER_COLLISIONS': 5}
+}
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
@@ -81,6 +89,31 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+
+
+# RestFramework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+            'core.authentication.token_authentication.TokenAuthentication',
+            'rest_framework.authentication.TokenAuthentication',
+        ),
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/day',
+        'login': '60/hour',
+        'signup': '2/day',
     }
 }
 
@@ -125,3 +158,22 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+LANGUAGES = (
+    ('en', 'English'),
+)
+
+DEFAULT_USER_LANGUAGE = 'en'
+
+APPEND_SLASH=False
+
+
+# Number of seconds in which the end-user authentication session expires when "Remember me" is disabled
+USER_SHORT_SESSION_SECONDS = 3600 * 24  # 24 hours
+# Number of seconds in which the end-user authentication session expires when "Remember me" is enabled
+USER_LONG_SESSION_SECONDS = 3600 * 24 * 60  # 60 days
+
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.AllowAllUsersModelBackend',
+)
