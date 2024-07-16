@@ -304,23 +304,23 @@ class ClientViewSet(viewsets.ModelViewSet):
     #         UserToClient.objects.filter(user=user, client=client).delete()
     #     return Response({'detail': _('User dissociated')})
 
-    # def perform_create(self, serializer):
-    #     try:
-    #         with transaction.atomic():
-    #             client = serializer.save()
-    #             # add_initial_credit(client=client)
-    #             client.usertoclient_set.create(user=self.request.user)
-    #             # order_metadata = OrderMetadata.from_request(request=self.request)
-    #             # client_created.send(
-    #             #     sender=self.__class__,
-    #             #     client=client,
-    #             #     create_auto_order_service=True,  # always create_auto_order_service when end-user adds client
-    #             #     request_user=self.request.user.id,
-    #             #     order_metadata=order_metadata.to_json(),
-    #             # )
-    #     except Exception as e:
-    #         # LOG.exception(e)
-    #         raise APIBadRequest()
+    def perform_create(self, serializer):
+        try:
+            with transaction.atomic():
+                client = serializer.save()
+                # add_initial_credit(client=client)
+                client.usertoclient_set.create(user=self.request.user)
+                # order_metadata = OrderMetadata.from_request(request=self.request)
+                # client_created.send(
+                #     sender=self.__class__,
+                #     client=client,
+                #     create_auto_order_service=True,  # always create_auto_order_service when end-user adds client
+                #     request_user=self.request.user.id,
+                #     order_metadata=order_metadata.to_json(),
+                # )
+        except Exception as e:
+            # LOG.exception(e)
+            raise APIBadRequest()
 
 
     # def destroy(self, request, *args, **kwargs):

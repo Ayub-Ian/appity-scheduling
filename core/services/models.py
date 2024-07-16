@@ -20,7 +20,7 @@ class Service(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     duration = models.IntegerField()
     access = models.CharField(max_length=50, choices=ACCESS_CHOICES, default=PUBLIC)
-    appointment = models.ForeignKey(Appointment, related_name='services', on_delete=models.CASCADE,null=True, blank=True)
+    # appointment = models.ForeignKey(Appointment, related_name='services', on_delete=models.CASCADE,null=True, blank=True)
     client = models.ForeignKey(Client, related_name='services', on_delete=models.CASCADE)
 
     class Meta:

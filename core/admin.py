@@ -3,7 +3,7 @@ from django.contrib import admin
 from booking.models import Appointment
 from core.models.appity_token import AppityToken
 from core.models.models import AppUser
-from services.models import Service
+from core.services.models import Service
 
 # Register your models here.
 @admin.register(AppUser)
