@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from bookings.models import Appointment
+from booking.models import Appointment
 from core.models.appity_token import AppityToken
 from core.models.models import AppUser
 from services.models import Service
@@ -18,7 +18,7 @@ class AppityTokenAdmin(admin.ModelAdmin):
 
 @admin.register(Appointment)
 class AppointmentAdmin(admin.ModelAdmin):
-    list_display = ['service', 'appointment_date', 'status']
+    list_display = ['id','appointment_date', 'status']
 
 
 @admin.register(Service)

@@ -222,8 +222,6 @@ class Currency(models.Model):
 
 class Client(models.Model):
     id = models.BigIntegerField(unique=True, default=RandomId('core.Client'), primary_key=True)
-    first_name = models.CharField(max_length=127)
-    last_name = models.CharField(max_length=127)
     company = models.CharField(max_length=127, blank=True, null=True)
     address1 = models.CharField(max_length=255)
     address2 = models.CharField(max_length=255, blank=True, null=True)
@@ -235,7 +233,7 @@ class Client(models.Model):
     phone = models.CharField(max_length=64)
     fax = models.CharField(max_length=64, blank=True, null=True)
     date_created = models.DateTimeField(db_index=True, auto_now_add=True)
-    currency = models.ForeignKey(Currency, default=get_default_currency, on_delete=models.CASCADE)
+    # currency = models.ForeignKey(Currency, default=get_default_currency, on_delete=models.CASCADE)
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='clients', through='UserToClient')
     status = models.CharField(max_length=16, choices=ClientStatus.choices, db_index=True, default=ClientStatus.inactive)
     suspend_reason = models.CharField(max_length=16, db_index=True, default=None, null=True, blank=True)
@@ -254,7 +252,7 @@ class UserToClient(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
 
-    roles = models.ManyToManyField('core.Role', related_name='users', blank=True)
+    # roles = models.ManyToManyField('core.Role', related_name='users', blank=True)
     invitation = models.BooleanField(default=False)
 
     class Meta:

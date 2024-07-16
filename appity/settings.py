@@ -31,15 +31,17 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'rest_framework',
-    'rest_framework.authtoken',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'rest_framework.authtoken',
     'core.apps.CoreConfig',
+    'booking.apps.BookingConfig'
 ]
 
 MIDDLEWARE = [
@@ -114,7 +116,9 @@ REST_FRAMEWORK = {
         'user': '1000/day',
         'login': '60/hour',
         'signup': '2/day',
-    }
+    },
+    'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
+
 }
 
 
